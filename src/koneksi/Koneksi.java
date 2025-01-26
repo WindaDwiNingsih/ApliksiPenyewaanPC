@@ -10,7 +10,7 @@ public class Koneksi {
     public static Connection getConnection() {
         if (connection == null) {
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/penyewapc", "root", "");
+                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/penyewa", "root", "");
             } catch (SQLException e) {
                 throw new RuntimeException("Database connection failed: " + e.getMessage());
             }

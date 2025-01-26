@@ -9,6 +9,9 @@ import javax.swing.table.DefaultTableModel;
 import Koneksi.Koneksi;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -58,13 +61,13 @@ public class Transaksi extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         namaBarang = new javax.swing.JTextField();
         harga = new javax.swing.JTextField();
+        jButton8 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         txtPencarian = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblTransaksi = new javax.swing.JTable();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -179,6 +182,14 @@ public class Transaksi extends javax.swing.JFrame {
             }
         });
 
+        jButton8.setBackground(new java.awt.Color(235, 255, 255));
+        jButton8.setText("Kembali");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -190,6 +201,8 @@ public class Transaksi extends javax.swing.JFrame {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,7 +266,8 @@ public class Transaksi extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -294,14 +308,6 @@ public class Transaksi extends javax.swing.JFrame {
             }
         });
 
-        jButton8.setBackground(new java.awt.Color(235, 255, 255));
-        jButton8.setText("Import");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -314,9 +320,7 @@ public class Transaksi extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(txtPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton8))))
+                        .addComponent(jButton7))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,8 +330,7 @@ public class Transaksi extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
+                    .addComponent(jButton7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(54, Short.MAX_VALUE))
@@ -402,7 +405,7 @@ public class Transaksi extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         tambahTransaksi();
-        nomorTelepon.requestFocus();              // TODO add your handling code here:
+                     // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -426,7 +429,7 @@ public class Transaksi extends javax.swing.JFrame {
         nomorTelepon.setText(tblTransaksi.getValueAt(row,2).toString());
         idBarang.setText(tblTransaksi.getValueAt(row, 3).toString());
         harga.setText(tblTransaksi.getValueAt(row, 4).toString());
-        jButton1.setEnabled(false);               // TODO add your handling code here:
+                     // TODO add your handling code here:
     }//GEN-LAST:event_tblTransaksiMouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -464,11 +467,12 @@ public class Transaksi extends javax.swing.JFrame {
     }//GEN-LAST:event_hargaKeyPressed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+            simpanCSV();    // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+        Home h = new Home();
+        h.setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
@@ -565,7 +569,7 @@ public class Transaksi extends javax.swing.JFrame {
     }
 
     private void tambahTransaksi() {
-        if (noId.getText().trim().isEmpty() || qty.getText().trim().isEmpty() || jDateChooser2.getDate() == null || nmaWisata.getText().trim().isEmpty() || hargaWisata.getText().trim().isEmpty() || noHp.getText().trim().isEmpty() || nama_p.getText().trim().isEmpty()) {
+        if (namaPelanggan.getText().trim().isEmpty() || nomorTelepon.getText().trim().isEmpty() || namaBarang.getText().trim().isEmpty() || harga.getText().trim().isEmpty() ) {
         JOptionPane.showMessageDialog(this, "Mohon seluruh data harus diisi!");
         return;
     }
@@ -573,32 +577,23 @@ public class Transaksi extends javax.swing.JFrame {
     try {
         // Format ke MySQL-compatible format
 
-        String query = "INSERT INTO transaksi (nama_pelanggan, notelp, nama"
-                + "-, subtotal, tanggal, noHp) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO transaksi (nama_pelanggan, notelp, nama_barang, harga) VALUES (?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(query);
 
-// Ambil data dari JDateChooser
-        var dates = jDateChooser2.getDate();
-        if (dates == null) {
-            JOptionPane.showMessageDialog(this, "Tanggal tidak boleh kosong!", "Warning", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        var sdfs = new java.text.SimpleDateFormat("yyyy-MM-dd");
-        String formattedDates = sdfs.format(dates); // Konversi tanggal ke format MySQL
+ // Konversi tanggal ke format MySQL
 
         // Ambil nilai dari form dan set parameter query
-        ps.setString(1, nmaWisata.getText()); // Nama wisata
-        ps.setString(2, nama_p.getText()); // Nama pengunjung
-        ps.setInt(3, Integer.parseInt(qty.getText())); // Jumlah tiket
-        ps.setDouble(4, Double.parseDouble(hargaWisata.getText()) * Integer.parseInt(qty.getText())); // Hitung subtotal
-        ps.setString(5, formattedDates); // Tanggal kunjungan (format MySQL)
-        ps.setString(6, noHp.getText()); // Nama pengunjung
+        ps.setString(1, namaPelanggan.getText()); 
+        ps.setString(2, nomorTelepon.getText()); 
+
+        ps.setString(3, namaBarang.getText()); // Tanggal kunjungan (format MySQL)
+        ps.setString(4, harga.getText()); // Nama pengunjung
 
         // Tampilkan pesan sukses
         JOptionPane.showMessageDialog(this, "Data berhasil ditambahkan!");
         // Eksekusi query
         ps.executeUpdate();
-        loadTableData(); // Refresh tabel
+        loadData(); // Refresh tabel
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(this, "Failed to add data: " + e.getMessage());
     }
@@ -651,6 +646,35 @@ public class Transaksi extends javax.swing.JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Gagal Memuat data: " + e.getMessage());
         }
+    }
+
+    private void simpanCSV() {
+        // Get the current date to append to the file name (optional)
+    String fileName = "sewapc.csv";
+    
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+        // Write the header row
+        writer.write("ID,Nama Pelanggan,No Telepon,Nama Barang, Harga");
+        writer.newLine();
+
+        // Write data from the table
+        for (int i = 0; i < tblTransaksi.getRowCount(); i++) {
+            StringBuilder row = new StringBuilder();
+            for (int j = 0; j < tblTransaksi.getColumnCount(); j++) {
+                // Append each cell value followed by a comma, except for the last one
+                row.append(tblTransaksi.getValueAt(i, j));
+                if (j < tblTransaksi.getColumnCount() - 1) {
+                    row.append(",");
+                }
+            }
+            writer.write(row.toString());
+            writer.newLine();
+        }
+        JOptionPane.showMessageDialog(this, "Data saved to " + fileName);
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error saving data to CSV: " + e.getMessage());
+    }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
 

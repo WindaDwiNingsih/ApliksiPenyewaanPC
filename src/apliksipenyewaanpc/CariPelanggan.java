@@ -4,13 +4,16 @@
  */
 package apliksipenyewaanpc;
 
+
 import Koneksi.Koneksi;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,12 +25,19 @@ public class CariPelanggan extends javax.swing.JFrame {
     /**
      * Creates new form CariPelanggan
      */
+    private final Connection connection;
+    private final DefaultTableModel tableModel;
     public CariPelanggan() {
+        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "Jenis Kelamin", "No Hp/Telp","Pekerjaan", "Alamat"}, 0); 
         initComponents();
-        tampildata();
+        tblPelanggan.setModel(tableModel);
+
+        // Database Connection
+        connection = Koneksi.getConnection();
+        loadData();
+        
     }
-    Connection conn = Koneksi.getConnection();
-    PreparedStatement pst;
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -128,11 +138,7 @@ public class CariPelanggan extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCPelangganActionPerformed
 
     private void tblPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPelangganMouseClicked
-        int row = tblPelanggan.getSelectedRow();
-        Pelanggan.txtNama.setText(tblPelanggan.getValueAt(row, 1).toString());
-        Pelanggan.txtNomorTelepon.setText(tblPelanggan.getValueAt(row, 2).toString());
-        
-        dispose();         // TODO add your handling code here:
+              // TODO add your handling code here:
     }//GEN-LAST:event_tblPelangganMouseClicked
 
     /**
@@ -179,24 +185,55 @@ public class CariPelanggan extends javax.swing.JFrame {
     private javax.swing.JTextField txtCPelanggan;
     // End of variables declaration//GEN-END:variables
 
-    private void tampildata() {
+    
+    private void cariData() {
+        String searchKey = txtCPelanggan.getText().trim();
+
         try {
-            String[] judul = {"Id", "Nama Pelanggan", "Nomor Telepon", "Nama Barang", "Harga"};
-            DefaultTableModel dtm = new DefaultTableModel(null,judul);
-            tblPelanggan.setModel(dtm);
-            String sql = "select*from barang";
-            if(!txtCPelanggan.getText().isEmpty()){
-               sql="select * from Pelanggan where nama_pelanggan like '%"+ txtCPelanggan.getText()+"%'";
+            tableModel.setRowCount(0);
+            String query = "SELECT * FROM pelanggan WHERE nama_pelanggan LIKE ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, "%" + searchKey + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tableModel.addRow(new Object[]{
+                        rs.getInt("id"),
+                        rs.getString("nama_pelanggan"),
+                        rs.getString("jenis_kelamin"),
+                        rs.getString("notelp"),
+                        rs.getString("alamat"),
+                        rs.getString("pekerjaan")
+                });
             }
-            pst = conn.prepareStatement(sql);
-            ResultSet rs =pst.executeQuery();
-            while(rs.next()){
-                String[] data = {rs.getString(1),
-                    rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)};
-                dtm.addRow(data);
-            }   } catch (SQLException ex) {
-            Logger.getLogger(Pelanggan.class.getName()).log(Level.SEVERE, null, ex);
+
+//            if (tableModel.getRowCount() == 0) {
+//                JOptionPane.showMessageDialog(this, "Nama Tempat yang anda cari tidak ditemukan!");
+//            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Search failed: " + e.getMessage());
         }
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    private void loadData() {
+        try {
+            tableModel.setRowCount(0);
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM pelanggan");
+            while (rs.next()) {
+                tableModel.addRow(new Object[]{
+                        rs.getInt("id"),
+                        rs.getString("nama_pelanggan"),
+                        rs.getString("jenis_kelamin"),
+                        rs.getString("notelp"),
+                        rs.getString("pekerjaan"),
+                        rs.getString("alamat"),
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Gagal Memuat data: " + e.getMessage());
+        }
+    }
+   
+    
 }
+
