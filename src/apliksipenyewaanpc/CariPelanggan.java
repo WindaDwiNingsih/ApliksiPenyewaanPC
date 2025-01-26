@@ -30,7 +30,7 @@ public class CariPelanggan extends javax.swing.JFrame {
     public CariPelanggan() {
         tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "Jenis Kelamin", "No Hp/Telp","Pekerjaan", "Alamat"}, 0); 
         initComponents();
-        tblPelanggan.setModel(tableModel);
+        tabelPelanggan.setModel(tableModel);
 
         // Database Connection
         connection = Koneksi.getConnection();
@@ -50,9 +50,9 @@ public class CariPelanggan extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtCPelanggan = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblPelanggan = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelPelanggan = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,8 +66,15 @@ public class CariPelanggan extends javax.swing.JFrame {
                 txtCPelangganActionPerformed(evt);
             }
         });
+        txtCPelanggan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCPelangganKeyReleased(evt);
+            }
+        });
 
-        tblPelanggan.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel2.setText("Cari Pelanggan");
+
+        tabelPelanggan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -78,14 +85,12 @@ public class CariPelanggan extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tblPelanggan.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelPelanggan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblPelangganMouseClicked(evt);
+                tabelPelangganMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblPelanggan);
-
-        jLabel2.setText("Cari Pelanggan");
+        jScrollPane1.setViewportView(tabelPelanggan);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,14 +101,14 @@ public class CariPelanggan extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(90, 90, 90))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(9, Short.MAX_VALUE))
+                        .addComponent(txtCPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,9 +119,9 @@ public class CariPelanggan extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -137,9 +142,18 @@ public class CariPelanggan extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCPelangganActionPerformed
 
-    private void tblPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPelangganMouseClicked
-              // TODO add your handling code here:
-    }//GEN-LAST:event_tblPelangganMouseClicked
+    private void txtCPelangganKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCPelangganKeyReleased
+        cariData();        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCPelangganKeyReleased
+
+    private void tabelPelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPelangganMouseClicked
+        int row = tabelPelanggan.getSelectedRow();
+        Transaksi.idPelanggan.setText(tabelPelanggan.getValueAt(row, 0).toString());
+       Transaksi.namaPelanggan.setText(tabelPelanggan.getValueAt(row, 1).toString());
+       Transaksi.nomorTelepon.setText(tabelPelanggan.getValueAt(row, 3).toString());
+        dispose();
+       // TODO add your handling code here:
+    }//GEN-LAST:event_tabelPelangganMouseClicked
 
     /**
      * @param args the command line arguments
@@ -181,7 +195,7 @@ public class CariPelanggan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblPelanggan;
+    private javax.swing.JTable tabelPelanggan;
     private javax.swing.JTextField txtCPelanggan;
     // End of variables declaration//GEN-END:variables
 

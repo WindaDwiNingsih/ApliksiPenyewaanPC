@@ -25,7 +25,8 @@ public class Transaksi extends javax.swing.JFrame {
     private final DefaultTableModel tableModel;
     
     public Transaksi() {
-        tableModel = new DefaultTableModel(new String[]{"ID", "Id Pelanggan", "Nama Pelanggan", "Nomor Telepon","Id Barang", "Nama Barang", "Harga"}, 0);
+        
+        tableModel = new DefaultTableModel(new String[]{"ID", "Nama Pelanggan", "Nomor Telepon", "Nama Barang", "Harga"}, 0);
         initComponents();
         tblTransaksi.setModel(tableModel);
 
@@ -340,7 +341,7 @@ public class Transaksi extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Data Barang");
+        jLabel1.setText(" Transaksi");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -425,10 +426,11 @@ public class Transaksi extends javax.swing.JFrame {
 
     private void tblTransaksiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTransaksiMouseClicked
         int row = tblTransaksi.getSelectedRow();
-        idPelanggan.setText(tblTransaksi.getValueAt(row, 1).toString());
+        namaPelanggan.setText(tblTransaksi.getValueAt(row, 1).toString());
+        
         nomorTelepon.setText(tblTransaksi.getValueAt(row,2).toString());
-        idBarang.setText(tblTransaksi.getValueAt(row, 3).toString());
-        harga.setText(tblTransaksi.getValueAt(row, 4).toString());
+        namaBarang.setText(tblTransaksi.getValueAt(row, 2).toString());
+        harga.setText(tblTransaksi.getValueAt(row, 3).toString());
                      // TODO add your handling code here:
     }//GEN-LAST:event_tblTransaksiMouseClicked
 
@@ -511,9 +513,9 @@ public class Transaksi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField harga;
-    private javax.swing.JTextField idBarang;
-    private javax.swing.JTextField idPelanggan;
+    public static javax.swing.JTextField harga;
+    public static javax.swing.JTextField idBarang;
+    public static javax.swing.JTextField idPelanggan;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -533,9 +535,9 @@ public class Transaksi extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField namaBarang;
-    private javax.swing.JTextField namaPelanggan;
-    private javax.swing.JTextField nomorTelepon;
+    public static javax.swing.JTextField namaBarang;
+    public static javax.swing.JTextField namaPelanggan;
+    public static javax.swing.JTextField nomorTelepon;
     private javax.swing.JTable tblTransaksi;
     private javax.swing.JTextField txtPencarian;
     // End of variables declaration//GEN-END:variables
@@ -612,10 +614,10 @@ public class Transaksi extends javax.swing.JFrame {
             while (rs.next()) {
                 tableModel.addRow(new Object[]{
                         rs.getInt("id"),
-                        rs.getString("id_pelanggan"),
+                        
                         rs.getString("nama_pelanggan"),
                         rs.getString("notelp"),
-                        rs.getString("id_barang"),
+                        
                         rs.getString("nama_barang"),
                         rs.getString("harga"),
                         
@@ -634,10 +636,10 @@ public class Transaksi extends javax.swing.JFrame {
             while (rs.next()) {
                 tableModel.addRow(new Object[]{
                         rs.getInt("id"),
-                        rs.getString("id_pelanggan"),
+                        
                         rs.getString("nama_pelanggan"),
                         rs.getString("notelp"),
-                        rs.getString("id_barang"),
+
                         rs.getString("nama_barang"),
                         rs.getString("harga"),
                         
@@ -674,7 +676,6 @@ public class Transaksi extends javax.swing.JFrame {
     } catch (IOException e) {
         JOptionPane.showMessageDialog(this, "Error saving data to CSV: " + e.getMessage());
     }
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
 

@@ -4,6 +4,15 @@
  */
 package apliksipenyewaanpc;
 
+import Koneksi.Koneksi;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author USER
@@ -13,8 +22,16 @@ public class CariBarang extends javax.swing.JFrame {
     /**
      * Creates new form CariBarang
      */
+    private final Connection connection;
+    private final DefaultTableModel tableModel;
     public CariBarang() {
+        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "Harga", "Spesifikasi", "Kategori"}, 0); 
         initComponents();
+        tabelBarang.setModel(tableModel);
+
+        // Database Connection
+        connection = Koneksi.getConnection();
+        loadData();
     }
 
     /**
@@ -29,9 +46,9 @@ public class CariBarang extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtCPelanggan = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        cPelanggan = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelBarang = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,8 +62,15 @@ public class CariBarang extends javax.swing.JFrame {
                 txtCPelangganActionPerformed(evt);
             }
         });
+        txtCPelanggan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCPelangganKeyReleased(evt);
+            }
+        });
 
-        cPelanggan.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel2.setText("Cari Barang");
+
+        tabelBarang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -57,9 +81,12 @@ public class CariBarang extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(cPelanggan);
-
-        jLabel2.setText("Cari Barang");
+        tabelBarang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelBarangMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelBarang);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -70,16 +97,14 @@ public class CariBarang extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(90, 90, 90))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,8 +115,8 @@ public class CariBarang extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -112,6 +137,19 @@ public class CariBarang extends javax.swing.JFrame {
     private void txtCPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCPelangganActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCPelangganActionPerformed
+
+    private void txtCPelangganKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCPelangganKeyReleased
+        cariData();        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCPelangganKeyReleased
+
+    private void tabelBarangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelBarangMouseClicked
+        int row = tabelBarang.getSelectedRow();
+        Transaksi.idBarang.setText(tabelBarang.getValueAt(row, 0).toString());
+        Transaksi.namaBarang.setText(tabelBarang.getValueAt(row, 1).toString());
+        Transaksi.harga.setText(tabelBarang.getValueAt(row, 2).toString());
+        dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelBarangMouseClicked
 
     /**
      * @param args the command line arguments
@@ -149,11 +187,55 @@ public class CariBarang extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable cPelanggan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabelBarang;
     private javax.swing.JTextField txtCPelanggan;
     // End of variables declaration//GEN-END:variables
+
+    private void loadData() {
+        try {
+            tableModel.setRowCount(0);
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM barang");
+            while (rs.next()) {
+                tableModel.addRow(new Object[]{
+                        rs.getInt("id"),
+                        rs.getString("nama_barang"),
+                        rs.getString("harga"),
+                        rs.getString("spesifikasi"),
+                        rs.getString("kategori"),
+                        
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Gagal Memuat data: " + e.getMessage());
+        }
+    }
+
+    private void cariData() {
+        String searchKey = txtCPelanggan.getText().trim();
+
+        try {
+            tableModel.setRowCount(0);
+            String query = "SELECT * FROM barang WHERE nama_barang LIKE ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, "%" + searchKey + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tableModel.addRow(new Object[]{
+                        rs.getInt("id"),
+                        rs.getString("nama_barang"),
+                        rs.getString("harga"),
+                        rs.getString("spesifikasi"),
+                        rs.getString("kategori"),
+                        
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Search failed: " + e.getMessage());
+        }
+    }
 }
