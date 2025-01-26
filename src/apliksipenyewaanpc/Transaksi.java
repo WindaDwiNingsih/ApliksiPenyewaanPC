@@ -474,7 +474,8 @@ public class Transaksi extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         Home h = new Home();
-        h.setVisible(true);        // TODO add your handling code here:
+        h.setVisible(true);  
+        dispose();// TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
